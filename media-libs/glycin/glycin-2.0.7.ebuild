@@ -28,12 +28,12 @@ RDEPEND="
 	>=dev-libs/glib-2.68.0:2
 	>=sys-libs/libseccomp-2.5.0
 	media-libs/lcms:2
-	x11-libs/fontconfig
+	media-libs/fontconfig
 	gtk? ( gui-libs/gtk:4 )
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	>=dev-util/meson-1.2
+	>=dev-build/meson-1.2
 	introspection? ( dev-libs/gobject-introspection )
 	vala? ( dev-lang/vala )
 "

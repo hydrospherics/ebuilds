@@ -1,0 +1,34 @@
+From: Anthony Lazara <me@a5y.rocks>
+Date: Thu, 19 Mar 2026 23:19:01 +0800
+Purpose: removes the donate part from about settings page
+Note:
+this patch does not mean that you shouldn't support GNOME, the GNOME project is truly wonderful.
+The donation part being added to settings is just intrusive.
+--- a/panels/system/about/cc-about-page.blp
++++ b/panels/system/about/cc-about-page.blp
+@@ -25,25 +25,6 @@
+       }
+ 
+       Adw.PreferencesGroup {
+-        Adw.ActionRow {
+-          title: _("Support GNOME");
+-          subtitle: _("GNOME needs your help. Please donate today.");
+-
+-          [suffix]
+-          Button {
+-            label: _("D_onate");
+-            use-underline: true;
+-            valign: center;
+-            styles [
+-              "suggested-action",
+-            ]
+-
+-            clicked => $on_donate_button_clicked_cb(template);
+-          }
+-        }
+-      }
+-
+-      Adw.PreferencesGroup {
+         $CcHostnameEntry hostname_row {
+           title: _("_Device Name");
+           use-underline: true;

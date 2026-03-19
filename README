@@ -1,0 +1,15 @@
+!! UNTESTED ON OPENRC, HEADS UP !!
+This repo contains ebuilds for GNOME 50.0, and its dependencies that are probably not in the main tree yet.
+
+my ebuilds are not perfect, but they're good enough for me so, use at your own risk.
+
+Tested on:
+- Linux 7.0.0-rc3-next-20260313 (amd64)
+- systemd 258.3
+
+Note that I won't test it on OpenRC as I don't have a system that uses it as of now. Your mileage may vary.
+
+They recently hardened their grip on systemd, so I do not know if it will even work with logind properly.
+
+Pray for the GNOME devs in Gentoo.
+I wish them good luck. This was a rough patch to begin with.
