@@ -102,6 +102,10 @@ BDEPEND="
 	dev-util/wayland-scanner
 "
 
+PATCHES=(
+	"${FILESDIR}/0001-remove-donate-row-from-about-panel.patch"
+)
+
 python_check_deps() {
 	use test || return 0
 	python_has_version "dev-python/python-dbusmock[${PYTHON_USEDEP}]"

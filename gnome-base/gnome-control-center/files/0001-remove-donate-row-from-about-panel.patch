@@ -1,0 +1,1145 @@
+From 23879e123cec2048f31512f78b8eb7a87f8142ba Mon Sep 17 00:00:00 2001
+From: Anthony Lazara <me@a5y.rocks>
+Date: Sun, 22 Mar 2026 04:55:45 +0800
+Subject: [PATCH] about: remove donate row from about panel
+
+removes the donation row from the `About` panel and related localization strings. 
+No shade to the GNOME project, they're great and you should definitely support them,
+but the panel felt a little intrusive here.
+---
+ panels/system/about/cc-about-page.blp         | 19 -----------
+ panels/system/about/cc-about-page.c           | 33 ++++++++-----------
+ po/bg.po                                      | 12 -------
+ po/ca.po                                      | 12 -------
+ po/cs.po                                      | 12 -------
+ po/da.po                                      | 12 -------
+ po/de.po                                      | 12 -------
+ po/el.po                                      | 12 -------
+ po/en_GB.po                                   | 12 -------
+ po/eo.po                                      | 12 -------
+ po/es.po                                      | 12 -------
+ po/eu.po                                      | 12 -------
+ po/fa.po                                      | 12 -------
+ po/fi.po                                      | 12 -------
+ po/fr.po                                      | 13 --------
+ po/gl.po                                      | 12 -------
+ po/he.po                                      | 12 -------
+ po/hu.po                                      | 12 -------
+ po/ia.po                                      | 12 -------
+ po/id.po                                      | 12 -------
+ po/it.po                                      | 12 -------
+ po/ja.po                                      | 12 -------
+ po/ka.po                                      | 12 -------
+ po/kab.po                                     | 12 -------
+ po/kk.po                                      | 12 -------
+ po/ko.po                                      | 12 -------
+ po/lt.po                                      | 12 -------
+ po/nl.po                                      | 12 -------
+ po/oc.po                                      | 12 -------
+ po/pl.po                                      | 12 -------
+ po/pt.po                                      | 12 -------
+ po/pt_BR.po                                   | 12 -------
+ po/ro.po                                      | 12 -------
+ po/ru.po                                      | 12 -------
+ po/sl.po                                      | 12 -------
+ po/sr.po                                      | 12 -------
+ po/sv.po                                      | 12 -------
+ po/th.po                                      | 13 --------
+ po/tr.po                                      | 12 -------
+ po/ug.po                                      | 12 -------
+ po/uk.po                                      | 14 --------
+ po/uz.po                                      | 14 --------
+ po/zh_CN.po                                   | 12 -------
+ po/zh_TW.po                                   | 12 -------
+ .../org.gnome.Settings.metainfo.xml.in.in     |  1 -
+ 45 files changed, 13 insertions(+), 550 deletions(-)
+
+diff --git a/panels/system/about/cc-about-page.blp b/panels/system/about/cc-about-page.blp
+index 1f2800ba8..f0e6ac56c 100644
+--- a/panels/system/about/cc-about-page.blp
++++ b/panels/system/about/cc-about-page.blp
+@@ -24,25 +24,6 @@ template $CcAboutPage: Adw.NavigationPage {
+         }
+       }
+ 
+-      Adw.PreferencesGroup {
+-        Adw.ActionRow {
+-          title: _("Support GNOME");
+-          subtitle: _("GNOME needs your help. Please donate today.");
+-
+-          [suffix]
+-          Button {
+-            label: _("D_onate");
+-            use-underline: true;
+-            valign: center;
+-            styles [
+-              "suggested-action",
+-            ]
+-
+-            clicked => $on_donate_button_clicked_cb(template);
+-          }
+-        }
+-      }
+-
+       Adw.PreferencesGroup {
+         $CcHostnameEntry hostname_row {
+           title: _("_Device Name");
+diff --git a/panels/system/about/cc-about-page.c b/panels/system/about/cc-about-page.c
+index ebd8fd361..b6afe8f30 100644
+--- a/panels/system/about/cc-about-page.c
++++ b/panels/system/about/cc-about-page.c
+@@ -32,15 +32,15 @@ struct _CcAboutPage
+ {
+   AdwNavigationPage parent_instance;
+ 
+-  AdwActionRow    *disk_row;
+-  AdwActionRow    *hardware_model_row;
+-  AdwActionRow    *memory_row;
+-  GtkPicture      *os_logo;
+-  AdwActionRow    *os_name_row;
+-  AdwActionRow    *processor_row;
+-
+-  AdwDialog       *system_details_window;
+-  guint            create_system_details_id;
++  AdwActionRow *disk_row;
++  AdwActionRow *hardware_model_row;
++  AdwActionRow *memory_row;
++  GtkPicture *os_logo;
++  AdwActionRow *os_name_row;
++  AdwActionRow *processor_row;
++
++  AdwDialog *system_details_window;
++  guint create_system_details_id;
+ };
+ 
+ G_DEFINE_TYPE (CcAboutPage, cc_about_page, ADW_TYPE_NAVIGATION_PAGE)
+@@ -70,7 +70,7 @@ about_page_setup_overview (CcAboutPage *self)
+ 
+   disk_capacity_string = get_primary_disk_info ();
+   if (disk_capacity_string == NULL)
+-    disk_capacity_string = g_strdup (_("Unknown"));
++    disk_capacity_string = g_strdup (_ ("Unknown"));
+   adw_action_row_set_subtitle (self->disk_row, disk_capacity_string);
+ 
+   os_name_text = get_os_name ();
+@@ -125,9 +125,9 @@ setup_os_logo (CcAboutPage *self)
+ #else
+   GtkIconTheme *icon_theme;
+   g_autofree char *logo_name = g_get_os_info ("LOGO");
+-  g_autoptr(GtkIconPaintable) icon_paintable = NULL;
+-  g_autoptr(GPtrArray) array = NULL;
+-  g_autoptr(GIcon) icon = NULL;
++  g_autoptr (GtkIconPaintable) icon_paintable = NULL;
++  g_autoptr (GPtrArray) array = NULL;
++  g_autoptr (GIcon) icon = NULL;
+   gboolean dark;
+ 
+   dark = use_dark_theme (self);
+@@ -153,12 +153,6 @@ setup_os_logo (CcAboutPage *self)
+ #endif
+ }
+ 
+-static void
+-on_donate_button_clicked_cb (CcAboutPage *self)
+-{
+-  g_app_info_launch_default_for_uri ("https://donate.gnome.org/", NULL, NULL);
+-}
+-
+ static void
+ cc_about_page_dispose (GObject *object)
+ {
+@@ -193,7 +187,6 @@ cc_about_page_class_init (CcAboutPageClass *klass)
+   gtk_widget_class_bind_template_child (widget_class, CcAboutPage, processor_row);
+ 
+   gtk_widget_class_bind_template_callback (widget_class, cc_about_page_open_system_details);
+-  gtk_widget_class_bind_template_callback (widget_class, on_donate_button_clicked_cb);
+ }
+ 
+ static void
+diff --git a/po/bg.po b/po/bg.po
+index 5fab14e29..fc56b6d96 100644
+--- a/po/bg.po
++++ b/po/bg.po
+@@ -7114,18 +7114,6 @@ msgstr "Относно"
+ msgid "System Logo"
+ msgstr "Лого на системата"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Подкрепете GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME се нуждае от помощта ви. Молим, дарете днес."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_Дарете"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/ca.po b/po/ca.po
+index 0279fde89..3574e6196 100644
+--- a/po/ca.po
++++ b/po/ca.po
+@@ -6404,18 +6404,6 @@ msgstr "Quant a"
+ msgid "System Logo"
+ msgstr "Logo del sistema"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Ajudeu al GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "El GNOME necessita la vostra ajuda. Feu una donació avui."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_Doneu"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/cs.po b/po/cs.po
+index 4dcd74672..b6fc4cb8b 100644
+--- a/po/cs.po
++++ b/po/cs.po
+@@ -6414,18 +6414,6 @@ msgstr "O systému"
+ msgid "System Logo"
+ msgstr "Logo systému"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Podpořte GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME potřebuje vaši pomoc. Prosím, darujte ještě dnes."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "Věn_ovat dar"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/da.po b/po/da.po
+index 8895cb4c4..3b0d4b037 100644
+--- a/po/da.po
++++ b/po/da.po
+@@ -6405,18 +6405,6 @@ msgstr "Om"
+ msgid "System Logo"
+ msgstr "Systemlogo"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Støt GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME har brug for din hjælp. Donér i dag."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_Donér"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/de.po b/po/de.po
+index 8353c8a12..60a348a94 100644
+--- a/po/de.po
++++ b/po/de.po
+@@ -6411,18 +6411,6 @@ msgstr "Info"
+ msgid "System Logo"
+ msgstr "System-Logo"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "GNOME unterstützen"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME benötigt Ihre Hilfe. Bitte spenden Sie noch heute."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_Spenden"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/el.po b/po/el.po
+index 31e2a23e4..8a20b74d0 100644
+--- a/po/el.po
++++ b/po/el.po
+@@ -7182,18 +7182,6 @@ msgstr "Πληροφορίες"
+ msgid "System Logo"
+ msgstr "Λογότυπο συστήματος"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Υποστηρίξτε το GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "Το GNOME χρειάζεται τη βοήθειά σας. Κάντε μια δωρεά σήμερα."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "Δ_ωρεά"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/en_GB.po b/po/en_GB.po
+index 91d8c87ca..38a2b232d 100644
+--- a/po/en_GB.po
++++ b/po/en_GB.po
+@@ -7034,18 +7034,6 @@ msgstr "About"
+ msgid "System Logo"
+ msgstr "System Logo"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Support GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME needs your help. Please donate today."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_onate"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/eo.po b/po/eo.po
+index 3e5f0cb7a..781cd38f2 100644
+--- a/po/eo.po
++++ b/po/eo.po
+@@ -7051,18 +7051,6 @@ msgstr "Pri"
+ msgid "System Logo"
+ msgstr "Sistememblemo"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Subteni GNOMO"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOMO bezonas vian helpon. Bonvole donacu hodiaŭ."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_onaci"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/es.po b/po/es.po
+index d0dd0c515..ca348c161 100644
+--- a/po/es.po
++++ b/po/es.po
+@@ -7153,18 +7153,6 @@ msgstr "Acerca de"
+ msgid "System Logo"
+ msgstr "Logo del sistema"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Ayude a GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME necesita ayuda. Done hoy."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_onar"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/eu.po b/po/eu.po
+index 0c2a7345d..98b771bb6 100644
+--- a/po/eu.po
++++ b/po/eu.po
+@@ -7104,18 +7104,6 @@ msgstr "Honi buruz"
+ msgid "System Logo"
+ msgstr "Sistemaren logoa"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Lagundu GNOMEri"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOMEk zure laguntza behar du. Zure dirulaguntza eskertuko genuke."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "Lagundu _diruz"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/fa.po b/po/fa.po
+index c3190372b..20eb7fcd9 100644
+--- a/po/fa.po
++++ b/po/fa.po
+@@ -6364,18 +6364,6 @@ msgstr "درباره"
+ msgid "System Logo"
+ msgstr "نشان سامانه"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "پشتیبانی از گنوم"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "گنوم نیازمند یاریتان است."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "ا_عانه"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/fi.po b/po/fi.po
+index a976a89d5..b432b9b2f 100644
+--- a/po/fi.po
++++ b/po/fi.po
+@@ -6388,18 +6388,6 @@ msgstr "Tietoja"
+ msgid "System Logo"
+ msgstr "Järjestelmän logo"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Tue Gnomea"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "Gnome tarvitsee tukeasi. Lahjoita tänään."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_Lahjoita"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/fr.po b/po/fr.po
+index 731fb26b1..414134864 100644
+--- a/po/fr.po
++++ b/po/fr.po
+@@ -7169,19 +7169,6 @@ msgstr "À propos"
+ msgid "System Logo"
+ msgstr "Logo du système"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Soutenir GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr ""
+-"GNOME a besoin de votre aide. Vous pouvez faire un don dès aujourd’hui."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "Faire un d_on"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/gl.po b/po/gl.po
+index 53690c9eb..794be6ae2 100644
+--- a/po/gl.po
++++ b/po/gl.po
+@@ -6399,18 +6399,6 @@ msgstr "Sobre"
+ msgid "System Logo"
+ msgstr "Logotipo do sistema"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Axudar a GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME precisa da súa axuda. Done hxoe."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_onar"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/he.po b/po/he.po
+index 78f95a119..ac1bff2d9 100644
+--- a/po/he.po
++++ b/po/he.po
+@@ -6444,18 +6444,6 @@ msgstr "אודות"
+ msgid "System Logo"
+ msgstr "לוגו המערכת"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "תמיכה ב־GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "‏GNOME צריך את העזרה שלך, נשמח לתרומתך."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_תרומה"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/hu.po b/po/hu.po
+index 24206fe0f..e8523f2b5 100644
+--- a/po/hu.po
++++ b/po/hu.po
+@@ -7120,18 +7120,6 @@ msgstr "Névjegy"
+ msgid "System Logo"
+ msgstr "Rendszerlogó"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "A GNOME támogatása"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "A GNOME-nak szüksége van a segítségére. Adományozzon még ma!"
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_Adományozás"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/ia.po b/po/ia.po
+index a9dc3e2c1..ca8d53f24 100644
+--- a/po/ia.po
++++ b/po/ia.po
+@@ -6778,18 +6778,6 @@ msgstr "A proposito de"
+ msgid "System Logo"
+ msgstr "Logo de systema"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr ""
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr ""
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr ""
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/id.po b/po/id.po
+index bf9a5a1fa..8f5fdc527 100644
+--- a/po/id.po
++++ b/po/id.po
+@@ -6316,18 +6316,6 @@ msgstr "Tentang"
+ msgid "System Logo"
+ msgstr "Logo Sistem"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Dukung GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME memerlukan bantuan Anda. Harap donasi hari ini."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_onasi"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/it.po b/po/it.po
+index c03537341..4ec5cf12a 100644
+--- a/po/it.po
++++ b/po/it.po
+@@ -7138,18 +7138,6 @@ msgstr "Informazioni"
+ msgid "System Logo"
+ msgstr "Logo di sistema"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Sostieni GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME ha bisogno del tuo aiuto. Fai una donazione oggi stesso."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "Fai una d_onazione"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/ja.po b/po/ja.po
+index e24ffac43..5c448c0ed 100644
+--- a/po/ja.po
++++ b/po/ja.po
+@@ -6397,18 +6397,6 @@ msgstr "このシステムについて"
+ msgid "System Logo"
+ msgstr "システムロゴ"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "GNOMEを支援する"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOMEはあなたの助けを必要としています。ぜひ寄付をお願いします。"
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "寄付(_O)"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/ka.po b/po/ka.po
+index f6c097398..9a959b77d 100644
+--- a/po/ka.po
++++ b/po/ka.po
+@@ -6373,18 +6373,6 @@ msgstr "შესახებ"
+ msgid "System Logo"
+ msgstr "სისტემის ლოგო"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "GNOME-ის მხარდაჭერა"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME-ს თქვენი დახმარება სჭირდება. შემოგვწირეთ დღეს."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "შემ_ოწირვა"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/kab.po b/po/kab.po
+index f859775fa..48e4e72fd 100644
+--- a/po/kab.po
++++ b/po/kab.po
+@@ -6790,18 +6790,6 @@ msgstr "Ɣef"
+ msgid "System Logo"
+ msgstr ""
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr ""
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr ""
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr ""
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/kk.po b/po/kk.po
+index d9145a1dd..5dc222089 100644
+--- a/po/kk.po
++++ b/po/kk.po
+@@ -6353,18 +6353,6 @@ msgstr "Осы туралы"
+ msgid "System Logo"
+ msgstr "Жүйелік логотип"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "GNOME жобасын қолдау"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME үшін сіздің көмегіңіз керек. Бүгін демеушілік етіңіз."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "Д_емеушілік ету"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/ko.po b/po/ko.po
+index f362c5447..0f74e4053 100644
+--- a/po/ko.po
++++ b/po/ko.po
+@@ -7130,18 +7130,6 @@ msgstr "정보"
+ msgid "System Logo"
+ msgstr "시스템 로고"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "그놈 프로젝트 도움 주기"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "그놈 프로젝트는 여러분의 도움이 필요합니다. 지금 기부해 보세요."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "기부(_O)"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/lt.po b/po/lt.po
+index 5827ef3ef..8ab0d7c05 100644
+--- a/po/lt.po
++++ b/po/lt.po
+@@ -6400,18 +6400,6 @@ msgstr "Apie"
+ msgid "System Logo"
+ msgstr "Sistemos logotipas"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Paremti GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME reikia jūsų pagalbos. Paaukokite šiandien."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_Aukoti"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/nl.po b/po/nl.po
+index 8054bf6e2..37a0e77b5 100644
+--- a/po/nl.po
++++ b/po/nl.po
+@@ -6356,18 +6356,6 @@ msgstr "Info"
+ msgid "System Logo"
+ msgstr "Systeemlogo"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Ondersteun GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME heeft uw hulp nodig. Geef vandaag nog een donatie."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_oneren"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/oc.po b/po/oc.po
+index d2d58bbc3..8c8230082 100644
+--- a/po/oc.po
++++ b/po/oc.po
+@@ -6370,18 +6370,6 @@ msgstr "A prepaus"
+ msgid "System Logo"
+ msgstr "Logotipe sistèma"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Assisténcia de GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME a besonh de vòstra ajuda. Mercés de far un don uèi."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_onar"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/pl.po b/po/pl.po
+index aab156e3c..dcb2ed1fc 100644
+--- a/po/pl.po
++++ b/po/pl.po
+@@ -7135,18 +7135,6 @@ msgstr "Informacje"
+ msgid "System Logo"
+ msgstr "Logo systemu"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Wesprzyj GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME potrzebuje Twojej pomocy. Prosimy o datek."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "Przekaż _datek"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/pt.po b/po/pt.po
+index 27b293603..a62dbf0c7 100644
+--- a/po/pt.po
++++ b/po/pt.po
+@@ -6393,18 +6393,6 @@ msgstr "Acerca"
+ msgid "System Logo"
+ msgstr "Logotipo do sistema"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Suporte o GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "O GNOME necessita da sua ajuda. Doe hoje mesmo."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_oar"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/pt_BR.po b/po/pt_BR.po
+index c5f106384..e6564c974 100644
+--- a/po/pt_BR.po
++++ b/po/pt_BR.po
+@@ -7174,18 +7174,6 @@ msgstr "Sobre"
+ msgid "System Logo"
+ msgstr "Logotipo do sistema"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Contribua para o GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "O GNOME precisa de sua ajuda. Por favor, doe hoje."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_oar"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/ro.po b/po/ro.po
+index 4866570ef..2f8b4a0c6 100644
+--- a/po/ro.po
++++ b/po/ro.po
+@@ -7141,18 +7141,6 @@ msgstr "Despre"
+ msgid "System Logo"
+ msgstr "Marca sistemului"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Susține GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME are nevoie de ajutorul tău. Donează astăzi."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_onează"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/ru.po b/po/ru.po
+index 16937bd11..7a0727427 100644
+--- a/po/ru.po
++++ b/po/ru.po
+@@ -7128,18 +7128,6 @@ msgstr "О системе"
+ msgid "System Logo"
+ msgstr "Логотип системы"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Поддержать GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME нужна ваша помощь. Пожалуйста, сделайте пожертвование сегодня."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_Пожертвовать"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/sl.po b/po/sl.po
+index 722b6228e..b9aab2635 100644
+--- a/po/sl.po
++++ b/po/sl.po
+@@ -6423,18 +6423,6 @@ msgstr "O programu"
+ msgid "System Logo"
+ msgstr "Logo sistema"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Podprite GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME potrebuje vašo pomoč. Prosimo, donirajte danes."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_oniraj"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/sr.po b/po/sr.po
+index 5f5830ff7..51e451c7a 100644
+--- a/po/sr.po
++++ b/po/sr.po
+@@ -6760,18 +6760,6 @@ msgstr "Системски подаци"
+ msgid "System Logo"
+ msgstr "Лого система"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Подржи Гном"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "Гному је потребна ваша помоћ. Пошаљите нам донацију."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "Д_онирај"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/sv.po b/po/sv.po
+index 24aaf64ed..c8384d19d 100644
+--- a/po/sv.po
++++ b/po/sv.po
+@@ -6387,18 +6387,6 @@ msgstr "Om"
+ msgid "System Logo"
+ msgstr "Systemlogotyp"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Stöd GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME behöver din hjälp. Donera i dag."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "D_onera"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/th.po b/po/th.po
+index 89708e727..49a04ae70 100644
+--- a/po/th.po
++++ b/po/th.po
+@@ -6638,19 +6638,6 @@ msgstr "เกี่ยวกับ"
+ msgid "System Logo"
+ msgstr "โลโก้ระบบ"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-#| msgid "Supported"
+-msgid "Support GNOME"
+-msgstr "สนับสนุน GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME ต้องการความช่วยเหลือจากคุณ กรุณาร่วมบริจาควันนี้"
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_บริจาค"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/tr.po b/po/tr.po
+index 6c656285e..c50b973a0 100644
+--- a/po/tr.po
++++ b/po/tr.po
+@@ -7067,18 +7067,6 @@ msgstr "Hakkında"
+ msgid "System Logo"
+ msgstr "Sistem Logosu"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "GNOMEʼu Destekle"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME yardımınıza gereksiniyor. Lütfen bugün bağış yapın."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "_Bağış Yap"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/ug.po b/po/ug.po
+index 6c5d09551..19f18cedd 100644
+--- a/po/ug.po
++++ b/po/ug.po
+@@ -6349,18 +6349,6 @@ msgstr "ھەققىدە"
+ msgid "System Logo"
+ msgstr "سىستېما تۇغى"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "GNOME نى قوللاش"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME ياردىمىڭىزگە موھتاج. بۈگۈن ئىئانە قىلىڭ."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "ئىئانە(_O)"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/uk.po b/po/uk.po
+index 0c64baa92..592f6773c 100644
+--- a/po/uk.po
++++ b/po/uk.po
+@@ -7183,20 +7183,6 @@ msgstr "Про систему"
+ msgid "System Logo"
+ msgstr "Логотип системи"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "Підтримка GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr ""
+-"GNOME потрібна ваша допомога. Будь ласка, підтримайте нас фінансово вже "
+-"сьогодні."
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "Підтримати _фінансово"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/uz.po b/po/uz.po
+index 59eea45b9..af09208a3 100644
+--- a/po/uz.po
++++ b/po/uz.po
+@@ -6423,20 +6423,6 @@ msgstr "Haqida"
+ msgid "System Logo"
+ msgstr "Tizim logotipi"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-#, fuzzy
+-#| msgid "Supported"
+-msgid "Support GNOME"
+-msgstr "GNOME-ni qoʻllab-quvvatlang"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr ""
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr ""
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/zh_CN.po b/po/zh_CN.po
+index 4da08558c..f6c4dfe9d 100644
+--- a/po/zh_CN.po
++++ b/po/zh_CN.po
+@@ -6953,18 +6953,6 @@ msgstr "关于"
+ msgid "System Logo"
+ msgstr "系统标志"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "支持 GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME 需要您的帮助。请考虑捐助。"
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "捐助(_O)"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/po/zh_TW.po b/po/zh_TW.po
+index 145e616e3..2a6f33a03 100644
+--- a/po/zh_TW.po
++++ b/po/zh_TW.po
+@@ -6372,18 +6372,6 @@ msgstr "關於"
+ msgid "System Logo"
+ msgstr "系統標誌"
+ 
+-#: panels/system/about/cc-about-page.blp:29
+-msgid "Support GNOME"
+-msgstr "支持 GNOME"
+-
+-#: panels/system/about/cc-about-page.blp:30
+-msgid "GNOME needs your help. Please donate today."
+-msgstr "GNOME 需要您的幫忙。請考慮捐款贊助。"
+-
+-#: panels/system/about/cc-about-page.blp:34
+-msgid "D_onate"
+-msgstr "捐款(_O)"
+-
+ #. Translators: this field contains the distro name and version
+ #: panels/system/about/cc-about-page.blp:56
+ msgid "Operating System"
+diff --git a/shell/appdata/org.gnome.Settings.metainfo.xml.in.in b/shell/appdata/org.gnome.Settings.metainfo.xml.in.in
+index 6daf248ab..4f980bec1 100644
+--- a/shell/appdata/org.gnome.Settings.metainfo.xml.in.in
++++ b/shell/appdata/org.gnome.Settings.metainfo.xml.in.in
+@@ -29,7 +29,6 @@
+   <url type="homepage">https://apps.gnome.org/Settings/</url>
+   <url type="bugtracker">https://gitlab.gnome.org/GNOME/gnome-control-center/issues/</url>
+   <url type="contact">https://discourse.gnome.org/tag/settings</url>
+-  <url type="donation">https://www.gnome.org/donate/</url>
+   <url type="help">https://discourse.gnome.org/tag/settings</url>
+   <url type="translate">https://l10n.gnome.org/module/gnome-control-center/</url>
+   <url type="contribute">https://welcome.gnome.org/app/Settings/</url>
+-- 
+2.52.0
+
