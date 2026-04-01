@@ -5,4 +5,11 @@
 		<email>me@a5y.rocks</email>
 		<name>Anthony Lazara</name>
 	</maintainer>
+	<use>
+		<flag name="pipewire">Enable PipeWire camera monitoring support</flag>
+		<flag name="xwayland">Enable Xwayland support</flag>
+	</use>
+	<upstream>
+		<remote-id type="gnome-gitlab">GNOME/gnome-shell</remote-id>
+	</upstream>
 </pkgmetadata>

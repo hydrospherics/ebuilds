@@ -4,7 +4,7 @@
 EAPI=8
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit flag-o-matic gnome.org gnome2-utils meson optfeature python-single-r1 virtualx xdg
+inherit gnome.org gnome2-utils meson optfeature python-single-r1 virtualx xdg
 
 DESCRIPTION="Provides core UI functions for the GNOME desktop"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/gnome-shell"
@@ -13,9 +13,8 @@ LICENSE="GPL-2+ LGPL-2+"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
 
-IUSE="gtk-doc +ibus +networkmanager +pipewire systemd test xwayland"
+IUSE="gtk-doc +networkmanager +pipewire systemd test xwayland"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
-	^^ ( systemd )
 	networkmanager? ( pipewire )"
 # portal_helper requires networkmanager per meson.build line 114
 # pipewire gates camera_monitor
@@ -47,8 +46,6 @@ DEPEND="
 	dev-libs/libical:=
 	media-libs/libglvnd
 
-	ibus? ( >=app-i18n/ibus-1.5.19 )
-
 	networkmanager? (
 		>=net-misc/networkmanager-1.10.4[introspection]
 		net-libs/libnma[introspection]
@@ -77,6 +74,7 @@ RDEPEND="${DEPEND}
 	>=sys-power/upower-0.99:=[introspection]
 	gnome-base/librsvg:2[introspection]
 	gui-libs/libadwaita:1[introspection]
+	>=app-i18n/ibus-1.5.19[introspection]
 
 	>=gnome-base/gnome-session-50.0
 	>=gnome-base/gnome-settings-daemon-50.0
@@ -86,8 +84,6 @@ RDEPEND="${DEPEND}
 	media-fonts/adwaita-fonts
 
 	sys-apps/xdg-desktop-portal-gnome
-
-	ibus? ( >=app-i18n/ibus-1.5.26[gtk3,gtk4,introspection] )
 
 	networkmanager? (
 		net-misc/mobile-broadband-provider-info
@@ -154,7 +150,7 @@ pkg_postinst() {
 		elog "media-libs/mesa if you do not have hardware 3D setup."
 	fi
 
-	optfeature "Bluetooth integration" gnome-base/gnome-control-center[bluetooth] net-wireless/gnome-bluetooth:3[introspection]
+	optfeature "Bluetooth integration" gnome-base/gnome-control-center net-wireless/gnome-bluetooth:3[introspection]
 	optfeature "Browser extension integration" gnome-extra/gnome-browser-connector
 	optfeature "Weather support" dev-libs/libgweather:4[introspection]
 }
