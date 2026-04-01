@@ -14,12 +14,7 @@ SRC_URI+=" https://dev.gentoo.org/~mattst88/distfiles/${PN}-gentoo-logo-dark.svg
 LICENSE="GPL-2+ CC-BY-SA-2.5"
 SLOT="2"
 KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86" #keyworded because I can't thoroughly test it yet
-
-# bluetooth, wacom, thunderbolt, nm, wwan (ffs, i dont use wwan) are now unconditional on Linux
-# wacom and bluetooth USE flags dropped, upstream hardcodes them for linux_not_s390
-# cups is now a hard dep per meson.build
-IUSE="debug +gnome-online-accounts +geolocation +ibus kerberos systemd test"
-REQUIRED_USE="^^ ( systemd )"
+IUSE="debug +geolocation +ibus test"
 
 RESTRICT="!test? ( test )"
 
@@ -57,22 +52,21 @@ DEPEND="
 	>=x11-libs/colord-gtk-0.3.0:=
 	media-libs/fontconfig
 	gnome-base/libgtop:2=
+	>=gnome-extra/tecla-47.0
 	>=sys-fs/udisks-2.1.8:2
 	app-crypt/libsecret
+	>=net-libs/gnome-online-accounts-3.51.0:=
 	net-libs/gnutls:=
 	media-libs/gsound
 	x11-libs/pango
+	app-crypt/mit-krb5
 
-	gnome-online-accounts? ( >=net-libs/gnome-online-accounts-3.51.0:= )
 	ibus? ( >=app-i18n/ibus-1.5.2 )
-	kerberos? ( app-crypt/mit-krb5 )
-	systemd? ( >=sys-apps/systemd-31 )
 "
 RDEPEND="${DEPEND}
 	media-libs/libcanberra[pulseaudio,sound(+)]
 	x11-themes/adwaita-icon-theme
 	>=gnome-extra/gnome-color-manager-3.1.2
-	>=gnome-extra/tecla-47.0
 	app-admin/system-config-printer
 	net-print/cups-pk-helper
 "
