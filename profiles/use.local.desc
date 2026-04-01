@@ -1,0 +1,14 @@
+gnome-base/gdm:bluetooth-sound - Enable Bluetooth audio support for PulseAudio config
+gnome-base/gdm:fprint - Enable fingerprint authentication support
+gnome-base/gdm:plymouth - Enable Plymouth integration
+gnome-base/gnome-control-center:ibus - Enable IBus input method support
+gnome-base/gnome-keyring:ssh-agent - Enable SSH agent support
+gnome-base/gnome-settings-daemon:modemmanager - Enable WWAN support via ModemManager
+gnome-base/gnome-shell:pipewire - Enable PipeWire camera monitoring support
+gnome-base/gnome-shell:xwayland - Enable Xwayland support
+gnome-base/nautilus:cloudproviders - Enable cloud provider integration
+gnome-base/nautilus:extensions - Build the stock Nautilus extensions
+gnome-base/nautilus:previewer - Pull in Sushi for file preview support
+x11-wm/mutter:devkit - Enable the mutter compositor development kit
+x11-wm/mutter:sysprof - Enable Sysprof profiling support
+x11-wm/mutter:xwayland - Enable Xwayland support
