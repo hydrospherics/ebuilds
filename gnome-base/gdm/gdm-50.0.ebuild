@@ -24,7 +24,7 @@ KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
 IUSE="accessibility audit bluetooth-sound branding fprint plymouth selinux systemd test wayland +X"
 
 RESTRICT="!test? ( test )"
-REQUIRED_USE="^^ ( systemd ) || ( wayland X )"
+REQUIRED_USE="|| ( wayland X )"
 
 # dconf, dbus and g-s-d are needed at install time for dconf update
 # keyutils is automagic dep that makes autologin unlock login keyring
@@ -49,12 +49,14 @@ COMMON_DEPEND="
 	)
 
 	systemd? ( >=sys-apps/systemd-186:0=[pam] )
+	!systemd? ( sys-auth/elogind )
 
 	plymouth? ( sys-boot/plymouth )
 	audit? ( sys-process/audit )
 
 	sys-libs/pam
-	sys-auth/pambase[systemd]
+	systemd? ( sys-auth/pambase[systemd] )
+	!systemd? ( sys-auth/pambase )
 
 	>=gnome-base/dconf-0.20
 	>=gnome-base/gnome-settings-daemon-50.0
@@ -124,7 +126,7 @@ src_configure() {
 		-Dgdm-xsession=true
 		-Dgroup=gdm
 		$(meson_feature audit libaudit)
-		-Dlogind-provider=systemd
+		-Dlogind-provider=$(usex systemd systemd elogind)
 		-Dpam-mod-dir=$(getpam_mod_dir)
 		$(meson_feature plymouth)
 		-Drun-dir=/run/gdm
@@ -132,9 +134,19 @@ src_configure() {
 		$(meson_use systemd systemd-journal)
 		$(meson_use X x11-support)
 		-Dinitial-vt=1
-		-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
-		-Dsystemduserunitdir="$(systemd_get_userunitdir)"
 	)
+
+	if use systemd; then
+		emesonargs+=(
+			-Dsystemdsystemunitdir="$(systemd_get_systemunitdir)"
+			-Dsystemduserunitdir="$(systemd_get_userunitdir)"
+		)
+	else
+		emesonargs+=(
+			-Dsystemdsystemunitdir=no
+			-Dsystemduserunitdir=no
+		)
+	fi
 
 	meson_src_configure
 }
@@ -173,7 +185,7 @@ pkg_postinst() {
 	done
 	eend ${ret}
 
-	systemd_reenable gdm.service
+	use systemd && systemd_reenable gdm.service
 	readme.gentoo_print_elog
 
 	udev_reload
