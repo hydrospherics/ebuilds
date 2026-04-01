@@ -12,18 +12,18 @@ LICENSE="GPL-2+"
 if [[ ${PV} == 9999 ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://gitlab.gnome.org/GNOME/mutter.git"
-	SRC_URI=""
 	SLOT="0/18" # This can get easily out of date, but better than 9967
 else
 	KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
 	SLOT="0/$(($(ver_cut 1) - 32))" # 0/libmutter_api_version - ONLY gnome-shell (or anything using mutter-clutter-<api_version>.pc) should use the subslot
 fi
 
-IUSE="bash-completion debug devkit gnome gtk-doc input_devices_wacom +introspection screencast sysprof systemd test +udev +xwayland video_cards_nvidia"
+IUSE="bash-completion debug devkit gnome gtk-doc input_devices_wacom
+	+introspection screencast sysprof systemd test +udev +xwayland
+	video_cards_nvidia"
 # native backend requires gles3 for hybrid graphics blitting support, udev and a logind provider
 REQUIRED_USE="
 	gtk-doc? ( introspection )
-	^^ ( systemd )
 	test? ( screencast )"
 RESTRICT="!test? ( test )"
 
@@ -69,8 +69,6 @@ RDEPEND="
 	>=x11-libs/libdrm-2.4.118
 	media-libs/mesa[gbm(+)]
 	>=dev-libs/libinput-1.30.0:=
-
-
 	xwayland? ( >=x11-base/xwayland-23.2.1[libei(+)] )
 	video_cards_nvidia? ( gui-libs/egl-wayland )
 
@@ -79,6 +77,7 @@ RDEPEND="
 		>=dev-libs/libgudev-238
 	)
 	systemd? ( sys-apps/systemd )
+	!systemd? ( sys-auth/elogind )
 	input_devices_wacom? ( >=dev-libs/libwacom-0.13:= )
 	screencast? ( >=media-video/pipewire-1.6.0:= )
 	introspection? ( >=dev-libs/gobject-introspection-1.82.0-r2:= )
