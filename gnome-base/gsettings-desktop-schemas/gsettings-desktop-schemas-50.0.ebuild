@@ -7,7 +7,7 @@ inherit gnome.org gnome2-utils meson xdg
 
 DESCRIPTION="Collection of GSettings schemas for GNOME desktop"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas"
-SRC_URI="https://download.gnome.org/sources/gsettings-desktop-schemas/50/gsettings-desktop-schemas-50.0.tar.xz"
+SRC_URI="https://download.gnome.org/sources/gsettings-desktop-schemas/50/${P}.tar.xz"
 
 LICENSE="LGPL-2.1+"
 SLOT="0"
