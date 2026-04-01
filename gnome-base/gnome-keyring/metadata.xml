@@ -5,4 +5,10 @@
 		<email>me@a5y.rocks</email>
 		<name>Anthony Lazara</name>
 	</maintainer>
+	<use>
+		<flag name="ssh-agent">Enable SSH agent support</flag>
+	</use>
+	<upstream>
+		<remote-id type="gnome-gitlab">GNOME/gnome-keyring</remote-id>
+	</upstream>
 </pkgmetadata>
