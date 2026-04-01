@@ -2,16 +2,15 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-inherit gnome.org gnome2-utils meson systemd xdg
+inherit desktop gnome.org gnome2-utils meson systemd xdg
 
 DESCRIPTION="Gnome session manager"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/gnome-session"
-SRC_URI="https://download.gnome.org/sources/gnome-session/50/gnome-session-50.0.tar.xz"
+SRC_URI="https://download.gnome.org/sources/gnome-session/50/${P}.tar.xz"
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
 IUSE="doc"
-
 
 COMMON_DEPEND="
 	>=dev-libs/glib-2.82.0:2
