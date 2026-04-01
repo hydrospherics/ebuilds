@@ -5,4 +5,12 @@
 		<email>me@a5y.rocks</email>
 		<name>Anthony Lazara</name>
 	</maintainer>
+	<use>
+		<flag name="cloudproviders">Enable cloud provider integration</flag>
+		<flag name="extensions">Build the stock Nautilus extensions</flag>
+		<flag name="previewer">Pull in Sushi for file preview support</flag>
+	</use>
+	<upstream>
+		<remote-id type="gnome-gitlab">GNOME/nautilus</remote-id>
+	</upstream>
 </pkgmetadata>

@@ -7,14 +7,15 @@ inherit gnome.org gnome2-utils meson readme.gentoo-r1 virtualx xdg
 
 DESCRIPTION="Default file manager for the GNOME desktop"
 HOMEPAGE="https://apps.gnome.org/Nautilus/"
-SRC_URI="https://download.gnome.org/sources/nautilus/50/nautilus-50.0.tar.xz"
+SRC_URI="https://download.gnome.org/sources/nautilus/50/${P}.tar.xz"
 LICENSE="GPL-3+ LGPL-2.1+"
 SLOT="0"
 
 KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
 
-IUSE="+cloudproviders doc +extensions +introspection previewer selinux"
+IUSE="+cloudproviders doc +extensions +introspection previewer selinux test"
 REQUIRED_USE="doc? ( introspection )"
+RESTRICT="!test? ( test )"
 
 DEPEND="
 	>=dev-libs/glib-2.84.0:2
@@ -31,7 +32,7 @@ DEPEND="
 	cloudproviders? ( >=net-libs/libcloudproviders-0.3.1 )
 	introspection? ( >=dev-libs/gobject-introspection-1.82.0-r2:= )
 	extensions? (
-		>=media-libs/gexiv2-0.14.0
+		>=media-libs/gexiv2-0.16.0
 		x11-libs/gdk-pixbuf:2
 		>=media-libs/gstreamer-1.0:1.0
 		>=media-libs/gst-plugins-base-1.0:1.0
