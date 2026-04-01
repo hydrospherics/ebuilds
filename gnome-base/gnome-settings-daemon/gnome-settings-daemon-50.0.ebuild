@@ -8,7 +8,7 @@ inherit gnome.org gnome2-utils python-any-r1 meson udev virtualx xdg
 
 DESCRIPTION="Gnome Settings Daemon"
 HOMEPAGE="https://gitlab.gnome.org/GNOME/gnome-settings-daemon"
-SRC_URI="https://download.gnome.org/sources/gnome-settings-daemon/50/gnome-settings-daemon-50.0.tar.xz"
+SRC_URI="https://download.gnome.org/sources/gnome-settings-daemon/50/${P}.tar.xz"
 
 LICENSE="GPL-2+ LGPL-2+"
 SLOT="0"
@@ -17,7 +17,6 @@ KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
 
 IUSE="+colord +cups debug modemmanager networkmanager smartcard systemd test wayland"
 RESTRICT="!test? ( test )"
-REQUIRED_USE="^^ ( systemd )"
 
 COMMON_DEPEND="
 	>=dev-libs/glib-2.70:2
@@ -51,6 +50,7 @@ COMMON_DEPEND="
 	x11-libs/libXext
 	media-libs/fontconfig
 	systemd? ( >=sys-apps/systemd-243 )
+	!systemd? ( sys-auth/elogind )
 "
 DEPEND="${COMMON_DEPEND}
 	x11-base/xorg-proto
@@ -90,6 +90,7 @@ src_configure() {
 	local emesonargs=(
 		-Dudev_dir="$(get_udevdir)"
 		$(meson_use systemd)
+		-Delogind=$(usex systemd false true)
 		-Dalsa=true
 		-Dgudev=true
 		-Dgcr3=false
