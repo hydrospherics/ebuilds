@@ -29,6 +29,7 @@ RDEPEND="
 	>=sys-libs/libseccomp-2.5.0
 	media-libs/lcms:2
 	media-libs/fontconfig
+	=media-libs/glycin-loaders-${PV}
 	gtk? ( gui-libs/gtk:4 )
 "
 DEPEND="${RDEPEND}"
