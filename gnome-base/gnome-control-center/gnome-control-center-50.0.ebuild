@@ -39,6 +39,7 @@ DEPEND="
 	dev-libs/json-glib
 
 	net-print/cups
+	net-fs/samba
 
 	>=net-misc/networkmanager-1.52.0[introspection,modemmanager]
 	>=net-libs/libnma-1.10.2
