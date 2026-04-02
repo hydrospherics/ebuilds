@@ -53,7 +53,7 @@ RDEPEND="
 	>=media-libs/harfbuzz-2.6.0:=
 	>=dev-libs/libei-1.3.901
 	>=media-libs/libdisplay-info-0.2:=
-	>=media-libs/glycin-2.0.0_beta2:2
+	>=media-libs/glycin-2.0.7:2
 
 	gnome? ( gnome-base/gnome-desktop:4= )
 
