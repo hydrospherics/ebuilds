@@ -23,14 +23,15 @@ LICENSE="|| ( LGPL-2.1+ MPL-2.0 )"
 SLOT="2"
 KEYWORDS="~amd64" #keyworded because I can't thoroughly test it yet
 IUSE="gtk +introspection vala"
+REQUIRED_USE="vala? ( introspection )"
 
 RDEPEND="
-	>=dev-libs/glib-2.68.0:2
+	>=dev-libs/glib-2.60.0:2
 	>=sys-libs/libseccomp-2.5.0
-	media-libs/lcms:2
-	media-libs/fontconfig
+	>=media-libs/lcms-2.14:2
+	>=media-libs/fontconfig-2.13.0
 	=media-libs/glycin-loaders-${PV}
-	gtk? ( gui-libs/gtk:4 )
+	gtk? ( >=gui-libs/gtk-4.16.0:4 )
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
