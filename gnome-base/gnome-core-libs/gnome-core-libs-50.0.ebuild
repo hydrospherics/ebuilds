@@ -14,7 +14,6 @@ KEYWORDS="~amd64"
 
 IUSE="cups python"
 
-DEPEND=""
 RDEPEND="
 	>=dev-libs/glib-2.86:2
 	>=x11-libs/gdk-pixbuf-2.42.12:2
@@ -32,4 +31,3 @@ RDEPEND="
 	>=media-libs/gst-plugins-good-1.24.11:1.0
 	python? ( >=dev-python/pygobject-3.50.0:3 )
 "
-BDEPEND=""
