@@ -5,4 +5,10 @@
 		<email>me@a5y.rocks</email>
 		<name>Anthony Lazara</name>
 	</maintainer>
+	<upstream>
+		<remote-id type="gnome-gitlab">GNOME/gjs</remote-id>
+	</upstream>
+	<use>
+		<flag name="sysprof">Enable profiling support using <pkg>dev-util/sysprof-capture</pkg></flag>
+	</use>
 </pkgmetadata>

@@ -6,6 +6,9 @@
 		<name>Anthony Lazara</name>
 	</maintainer>
 	<upstream>
-		<remote-id type="gitlab">GNOME/gexiv2</remote-id>
+		<remote-id type="gnome-gitlab">GNOME/gexiv2</remote-id>
 	</upstream>
+	<use>
+		<flag name="tools">Build and install tools</flag>
+	</use>
 </pkgmetadata>
