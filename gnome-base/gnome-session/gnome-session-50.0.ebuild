@@ -9,7 +9,7 @@ HOMEPAGE="https://gitlab.gnome.org/GNOME/gnome-session"
 SRC_URI="https://download.gnome.org/sources/gnome-session/50/${P}.tar.xz"
 LICENSE="GPL-2+"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64"
 IUSE="doc"
 
 COMMON_DEPEND="

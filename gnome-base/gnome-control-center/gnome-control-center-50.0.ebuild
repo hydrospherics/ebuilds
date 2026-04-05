@@ -13,7 +13,7 @@ SRC_URI+=" https://dev.gentoo.org/~mattst88/distfiles/${PN}-gentoo-logo-dark.svg
 # Logo is CC-BY-SA-2.5
 LICENSE="GPL-2+ CC-BY-SA-2.5"
 SLOT="2"
-KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86" #keyworded because I can't thoroughly test it yet
+KEYWORDS="~amd64"
 IUSE="debug +geolocation +ibus test"
 
 RESTRICT="!test? ( test )"

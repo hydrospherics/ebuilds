@@ -21,7 +21,7 @@ S=${WORKDIR}/${MY_P}
 LICENSE="|| ( LGPL-2.1+ MPL-2.0 )"
 
 SLOT="2"
-KEYWORDS="~amd64" #keyworded because I can't thoroughly test it yet
+KEYWORDS="amd64"
 IUSE="gtk +introspection vala"
 REQUIRED_USE="vala? ( introspection )"
 
