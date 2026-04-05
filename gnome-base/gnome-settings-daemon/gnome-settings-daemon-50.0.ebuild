@@ -24,8 +24,8 @@ COMMON_DEPEND="
 	>=gnome-base/gsettings-desktop-schemas-46_beta
 	>=dev-libs/libgweather-4.2.0:4=
 	|| (
-		>=sci-geosciences/geocode-glib-3.26.3:2=
-		>=sci-geosciences/geocode-glib-3.10.0:0=
+		>=sci-geosciences/geocode-glib-3.26.3:2
+		>=sci-geosciences/geocode-glib-3.10.0:0
 	)
 	colord? ( >=x11-misc/colord-1.4.5:= )
 	media-libs/libcanberra
