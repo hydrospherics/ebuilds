@@ -13,21 +13,20 @@ SRC_URI="https://github.com/samuelngs/apple-emoji-ttf/releases/download/${MY_TAG
 LICENSE="all-rights-reserved"
 SLOT="0"
 KEYWORDS="amd64 ~arm arm64 ~loong ppc64 ~riscv x86"
+S="${WORKDIR}"
 RESTRICT="binchecks strip"
 
 FONT_SUFFIX="ttf"
 FONT_S="${S}"
 FONT_CONF=( "${FILESDIR}/75-apple-color-emoji.conf" )
 
-S="${WORKDIR}"
-
 src_unpack() {
-    cp "${DISTDIR}/AppleColorEmoji-${MY_TAG}.ttf" "${S}/apple-color-emoji.ttf" || die
+	cp "${DISTDIR}/AppleColorEmoji-${MY_TAG}.ttf" "${S}/apple-color-emoji.ttf" || die
 }
 
 src_compile() { :; }
 
 src_install() {
-    FONT_S="${S}"
-    font_src_install
+	FONT_S="${S}"
+	font_src_install
 }

@@ -5,4 +5,11 @@
 		<email>me@a5y.rocks</email>
 		<name>Anthony Lazara</name>
 	</maintainer>
+	<use>
+		<flag name="elf">Use <pkg>virtual/libelf</pkg> to store and read gresources in ELF files</flag>
+		<flag name="mime">Install <pkg>x11-misc/shared-mime-info</pkg> to ensure MIME db is available</flag>
+		<flag name="sysprof">Enable profiling support using <pkg>dev-util/sysprof-capture</pkg></flag>
+		<flag name="systemtap">Enable DTrace tracing support</flag>
+		<flag name="utils">Install helper utils like gdbus, gresource, and gio</flag>
+	</use>
 </pkgmetadata>
