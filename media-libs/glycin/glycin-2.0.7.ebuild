@@ -19,6 +19,7 @@ SRC_URI="
 S=${WORKDIR}/${MY_P}
 
 LICENSE="|| ( LGPL-2.1+ MPL-2.0 )"
+# TODO: check dependent crate licenses
 
 SLOT="2"
 KEYWORDS="amd64"
@@ -30,7 +31,7 @@ RDEPEND="
 	>=sys-libs/libseccomp-2.5.0
 	>=media-libs/lcms-2.14:2
 	>=media-libs/fontconfig-2.13.0
-	=media-libs/glycin-loaders-${PV}
+	~media-libs/glycin-loaders-${PV}
 	gtk? ( >=gui-libs/gtk-4.16.0:4 )
 "
 DEPEND="${RDEPEND}"

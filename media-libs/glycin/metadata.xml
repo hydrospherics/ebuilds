@@ -5,4 +5,7 @@
 		<email>me@a5y.rocks</email>
 		<name>Anthony Lazara</name>
 	</maintainer>
+	<upstream>
+		<remote-id type="gnome-gitlab">GNOME/glycin</remote-id>
+	</upstream>
 </pkgmetadata>
