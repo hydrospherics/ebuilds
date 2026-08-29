@@ -1,0 +1,5 @@
+This repository contains my personal Gentoo ebuilds. It comes with no guarantee of support or upkeep, so use these ebuilds entirely at your own risk. Do not use if you expect any babysitting from me.
+
+A primary focus of this overlay is heavily stripped down GNOME 50+ ebuilds, which serve mainly as a minimal base that can be tuned to my own needs, aside from being further ahead than upstream ebuilds. I use systemd, so of course, these packages are tested exclusively on systemd-based environments and have not been validated for OpenRC. Updates to the ebuilds are applied arbitrarily based on my personal necessity and workflow needs.
+
+All ebuilds included in this repository are distributed under the terms of the GNU General Public License v2.0 (GPL-2), the full text of which can be read in the LICENSE.GPL-2.0 file.
